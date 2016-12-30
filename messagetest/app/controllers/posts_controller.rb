@@ -10,6 +10,7 @@ class PostsController < ApplicationController
   def create
   	@post = Post.new(title: "", text: params[:message][:text])
   	if @post.save
+      ActionCable.server.broadcast "first_channel", message: @post[:text]
   	  render json: @post
   	else
       render json: @post.errors
